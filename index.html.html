@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Security Researcher — Purple Team Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0c0f;--surface:#111318;--surface2:#181c23;--border:#1e232e;--accent:#00d4aa;--accent2:#4f8fff;--warn:#ff6b35;--text:#e2e8f0;--muted:#64748b;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,170,0.008) 2px,rgba(0,212,170,0.008) 4px);pointer-events:none;z-index:1000}
+nav{position:fixed;top:0;width:100%;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,12,15,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.hero{min-height:100vh;display:flex;align-items:center;padding:0 48px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 70% 50%,rgba(0,212,170,0.04) 0%,transparent 70%)}
+.hero-content{max-width:680px;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid rgba(0,212,170,0.3);border-radius:4px;font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:28px}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:20px}
+h1 span{color:var(--accent)}
+.hero-desc{font-family:var(--mono);font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:36px;max-width:520px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{padding:12px 24px;background:var(--accent);color:#000;font-family:var(--mono);font-size:13px;font-weight:500;border:none;border-radius:6px;cursor:pointer;text-decoration:none;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-outline{padding:12px 24px;background:transparent;color:var(--accent);font-family:var(--mono);font-size:13px;border:1px solid rgba(0,212,170,0.4);border-radius:6px;cursor:pointer;text-decoration:none;transition:border-color .2s}
+.btn-outline:hover{border-color:var(--accent)}
+.stats-bar{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 48px;display:flex;gap:48px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent)}
+.stat-label{font-family:var(--mono);font-size:11px;color:var(--muted)}
+section{padding:80px 48px}
+.section-tag{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+h2{font-size:2rem;font-weight:700;color:#fff;margin-bottom:40px}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.project-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;transition:border-color .2s,transform .2s;cursor:pointer}
+.project-card:hover{border-color:rgba(0,212,170,0.4);transform:translateY(-2px)}
+.project-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.project-title{font-family:var(--mono);font-size:15px;font-weight:500;color:#fff}
+.project-type{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;background:rgba(0,212,170,0.1);color:var(--accent);border:1px solid rgba(0,212,170,0.2)}
+.project-desc{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:3px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+.tag.red{background:rgba(255,107,53,0.1);color:var(--warn);border-color:rgba(255,107,53,0.2)}
+.tag.blue{background:rgba(79,143,255,0.1);color:var(--accent2);border-color:rgba(79,143,255,0.2)}
+.tag.green{background:rgba(0,212,170,0.1);color:var(--accent);border-color:rgba(0,212,170,0.2)}
+.terminal{background:#05080d;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:24px 0}
+.term-bar{background:var(--surface2);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-title{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:8px}
+.term-body{padding:20px;font-family:var(--mono);font-size:12px;line-height:1.9;overflow-x:auto}
+.t-prompt{color:var(--accent)}.t-cmd{color:#fff}.t-out{color:var(--muted)}.t-high{color:var(--warn)}.t-ok{color:var(--accent)}.t-info{color:var(--accent2)}
+.timeline{border-left:1px solid var(--border);padding-left:28px;display:flex;flex-direction:column;gap:28px}
+.tl-item{position:relative}
+.tl-item::before{content:'';position:absolute;left:-33px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-year{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:6px}
+.tl-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px}
+.tl-desc{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.7}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.skill-group{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px}
+.skill-group-title{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+.skill-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.skill-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.skill-name{font-family:var(--mono);font-size:12px;color:var(--text)}
+.mitre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.mitre-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px}
+.mitre-id{font-family:var(--mono);font-size:11px;color:var(--accent2);margin-bottom:4px}
+.mitre-name{font-family:var(--mono);font-size:11px;color:var(--text)}
+.mitre-bar{height:3px;background:var(--surface2);border-radius:2px;margin-top:8px;overflow:hidden}
+.mitre-fill{height:100%;border-radius:2px;background:var(--accent)}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-note{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-content > *{animation:fadeUp .6s ease both}
+.hero-badge{animation-delay:.1s}.hero-content h1{animation-delay:.2s}.hero-desc{animation-delay:.3s}.hero-ctas{animation-delay:.4s}
+@media(max-width:600px){nav{padding:12px 20px}.hero{padding:80px 20px}section{padding:60px 20px}.stats-bar{padding:20px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">$ dns-purple-lab ~</div>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#research">Research</a>
+    <a href="#skills">Stack</a>
+    <a href="#mitre">MITRE</a>
+    <a href="https://github.com" target="_blank">GitHub &#x2197;</a>
+  </div>
+</nav>
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Purple Team Researcher</div>
+    <h1>Hunting<br><span>Encrypted DNS</span><br>Threats</h1>
+    <p class="hero-desc">ML-powered detection engineering for DNS exfiltration,<br>DoH/DoQ C2 channels, and AI-agent attack surfaces.<br>Full SIEM pipeline. TuDoor &middot; RebirthDay &middot; BGP Hijack &middot; MCP</p>
+    <div class="hero-ctas">
+      <a href="https://github.com" class="btn-primary" target="_blank">View GitHub</a>
+      <a href="#projects" class="btn-outline">See Projects</a>
+    </div>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">6</span><span class="stat-label">Open-source tools</span></div>
+  <div class="stat"><span class="stat-num">6</span><span class="stat-label">CVEs researched</span></div>
+  <div class="stat"><span class="stat-num">78%</span><span class="stat-label">MITRE T1071.004 coverage</span></div>
+  <div class="stat"><span class="stat-num">2min</span><span class="stat-label">MTTD (exfil detection)</span></div>
+  <div class="stat"><span class="stat-num">0%</span><span class="stat-label">False positive (whitelisted)</span></div>
+</div>
+<section id="projects">
+  <div class="section-tag">Tools</div>
+  <h2>Open Source Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card"><div class="project-header"><span class="project-title">dns-anomaly-detector</span><span class="project-type">Blue Team</span></div><p class="project-desc">ML-powered DNS exfiltration and DGA detection. Shannon entropy + Isolation Forest + behavioral slow-drip engine. Zeek/pcap input, JSON/CSV output, CI-ready exit codes.</p><div class="project-tags"><span class="tag green">Isolation Forest</span><span class="tag green">Entropy</span><span class="tag blue">Zeek</span><span class="tag">Python</span><span class="tag">T1048.003</span></div></div>
+    <div class="project-card"><div class="project-header"><span class="project-title">encrypted-dns-hunter</span><span class="project-type">Blue Team</span></div><p class="project-desc">DoH/DoQ C2 detection via QUIC handshake fingerprinting (Merlin signatures), DoH beaconing (payload CoV + interval regularity), ML on connection features.</p><div class="project-tags"><span class="tag green">QUIC Fingerprint</span><span class="tag green">DoH Beacon</span><span class="tag blue">Sigma</span><span class="tag">T1071.004</span></div></div>
+    <div class="project-card"><div class="project-header"><span class="project-title">dns-exfil-sim</span><span class="project-type">Purple Team</span></div><p class="project-desc">Slow-drip DNS exfil simulator with 4 modes: slow-drip, burst, fragmented, decoy-mix. Jitter, session ID, decoy interleaving. Measures MTTD against your stack.</p><div class="project-tags"><span class="tag red">Simulation</span><span class="tag">4 modes</span><span class="tag">Lab only</span><span class="tag">MTTD test</span></div></div>
+    <div class="project-card"><div class="project-header"><span class="project-title">cti-module</span><span class="project-type">CTI</span></div><p class="project-desc">Automated threat intelligence pipeline. OTX + Abuse.ch + Feodo Tracker &rarr; Zeek Intel Framework. Daemon mode, hourly refresh, Elasticsearch indexing.</p><div class="project-tags"><span class="tag blue">OTX</span><span class="tag blue">Abuse.ch</span><span class="tag green">Zeek Intel</span><span class="tag">Daemon</span></div></div>
+    <div class="project-card"><div class="project-header"><span class="project-title">c2-profile-library</span><span class="project-type">Detection</span></div><p class="project-desc">Network-observable fingerprints for Merlin, Cobalt Strike DNS, Fast Flux, DGA &mdash; from public research. Sigma generator, conn.log profile matcher.</p><div class="project-tags"><span class="tag red">Merlin</span><span class="tag red">CS DNS</span><span class="tag green">Sigma</span><span class="tag">Public research</span></div></div>
+    <div class="project-card"><div class="project-header"><span class="project-title">dns-purple-lab</span><span class="project-type">Lab</span></div><p class="project-desc">Full Docker Compose stack: Attacker + Unbound + Zeek + Elasticsearch + Kibana + Filebeat + CTI. One-command setup. Isolated network.</p><div class="project-tags"><span class="tag blue">Docker</span><span class="tag blue">ELK</span><span class="tag green">Zeek</span><span class="tag">Purple Team</span></div></div>
+  </div>
+  <div class="terminal" style="margin-top:32px">
+    <div class="term-bar"><div class="term-dot" style="background:#ff5f57"></div><div class="term-dot" style="background:#febc2e"></div><div class="term-dot" style="background:#28c840"></div><span class="term-title">dns-purple-lab &mdash; demo output</span></div>
+    <div class="term-body">
+      <div><span class="t-prompt">$</span> <span class="t-cmd">python dns_anomaly_detector.py --demo</span></div>
+      <div class="t-out">&nbsp;</div>
+      <div class="t-out">  Queries analyzed : 82 &nbsp; Total alerts : 18 &nbsp; HIGH: 1 &nbsp; MEDIUM: 17</div>
+      <div class="t-high">  [&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2591;&#x2591;&#x2591;&#x2591;&#x2591;] 55/100 &nbsp;HIGH</div>
+      <div class="t-ok">  Reasons: long_subdomain(42) | hex_encoded(100%) | digit_heavy(90%)</div>
+      <div class="t-out">&nbsp;</div>
+      <div><span class="t-prompt">$</span> <span class="t-cmd">python encrypted_dns_hunter.py --demo</span></div>
+      <div class="t-out">&nbsp;</div>
+      <div class="t-high">  [&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;] 100/100 &nbsp;CRITICAL &nbsp;&mdash; long_lived_quic_c2</div>
+      <div class="t-ok">  10.0.0.42 &rarr; 185.220.101.99:853 &nbsp; duration=24h &nbsp; history=ISishIH (Merlin)</div>
+      <div class="t-high">  [&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2591;] &nbsp;90/100 &nbsp;HIGH &nbsp;&mdash; doh_beaconing</div>
+      <div class="t-ok">  uniform_payload(cv=0.000) | regular_interval(avg=30s)</div>
+      <div class="t-out">&nbsp;</div>
+      <div><span class="t-prompt">$</span> <span class="t-cmd">python cti_module.py --demo --output ./intel</span></div>
+      <div class="t-info">  CTI refresh complete &nbsp; 6 indicators &nbsp; 4 domains &nbsp; 2 IPs &nbsp; elapsed=0.0s</div>
+    </div>
+  </div>
+</section>
+<section id="research" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-tag">Research</div>
+  <h2>Threat Landscape — 2008 &rarr; 2025</h2>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">2008</div><div class="tl-title">Kaminsky Attack</div><div class="tl-desc">16-bit Transaction ID = 65,536 combinations. UDP brute-force enables cache poisoning. Port randomization introduced &mdash; later proven bypassable.</div></div>
+    <div class="tl-item"><div class="tl-year">2024 &mdash; IEEE S&amp;P</div><div class="tl-title">TuDoor &mdash; Pre-processing Logic Flaw</div><div class="tl-desc">24 resolvers affected. VCP: &lt;1s cache poisoning (349ms, Microsoft DNS). VDS: zero-bandwidth DoS. Port randomization rendered irrelevant.</div></div>
+    <div class="tl-item"><div class="tl-year">2025 Q1 &mdash; ACM CCS</div><div class="tl-title">RebirthDay + BIND Bailiwick CVE</div><div class="tl-desc">ECS Birthday Paradox: 365K+ resolvers vulnerable (CVE-2025-5994). BIND CVE-2025-40778: 1&ndash;2 packets poison AD/banking records for 24h.</div></div>
+    <div class="tl-item"><div class="tl-year">2025 Q2</div><div class="tl-title">MCP Inspector RCE &mdash; CVE-2025-49596 (CVSS 9.4)</div><div class="tl-desc">AI agent + DNS rebinding = localhost WebSocket RCE. Zero-click. Corporate DB exfil via MCP server.</div></div>
+    <div class="tl-item"><div class="tl-year">20 Jun 2025</div><div class="tl-title">Root Server BGP Hijack &mdash; AS35168</div><div class="tl-desc">8 root servers hijacked. 90-minute window. RPKI ROA existed &mdash; ROV not enforced. First known direct root server BGP hijack.</div></div>
+  </div>
+</section>
+<section id="skills">
+  <div class="section-tag">Stack</div>
+  <h2>Technical Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-group"><div class="skill-group-title">Detection</div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Zeek (conn/dns/quic)</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">RITA behavioral analytics</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Sigma rule authoring</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Elasticsearch + Kibana</span></div></div>
+    <div class="skill-group"><div class="skill-group-title">ML / Data</div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Isolation Forest</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Shannon entropy</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Behavioral baselining</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">scikit-learn, numpy</span></div></div>
+    <div class="skill-group"><div class="skill-group-title">Protocols</div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">DNS / DNSSEC / EDNS</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">DoH / DoT / DoQ</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">QUIC (RFC 9000)</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">BGP / RPKI / ROV</span></div></div>
+    <div class="skill-group"><div class="skill-group-title">Threat Intel</div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">AlienVault OTX</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Abuse.ch (URLhaus/DNSBL)</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Feodo Tracker</span></div><div class="skill-item"><div class="skill-dot"></div><span class="skill-name">C2 framework profiling</span></div></div>
+  </div>
+</section>
+<section id="mitre" style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="section-tag">MITRE ATT&amp;CK</div>
+  <h2>Detection Coverage</h2>
+  <div class="mitre-grid">
+    <div class="mitre-card"><div class="mitre-id">T1071.004</div><div class="mitre-name">DNS App Layer Protocol</div><div class="mitre-bar"><div class="mitre-fill" style="width:78%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">78%</div></div>
+    <div class="mitre-card"><div class="mitre-id">T1048.003</div><div class="mitre-name">Exfil over DNS</div><div class="mitre-bar"><div class="mitre-fill" style="width:85%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">85%</div></div>
+    <div class="mitre-card"><div class="mitre-id">T1568.001</div><div class="mitre-name">Fast Flux DNS</div><div class="mitre-bar"><div class="mitre-fill" style="width:70%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">70%</div></div>
+    <div class="mitre-card"><div class="mitre-id">T1568.002</div><div class="mitre-name">Domain Gen. Algo.</div><div class="mitre-bar"><div class="mitre-fill" style="width:65%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">65%</div></div>
+    <div class="mitre-card"><div class="mitre-id">T1090</div><div class="mitre-name">DNS Tunneling Proxy</div><div class="mitre-bar"><div class="mitre-fill" style="width:72%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">72%</div></div>
+    <div class="mitre-card"><div class="mitre-id">T1071.001</div><div class="mitre-name">C2 via Web (DoH)</div><div class="mitre-bar"><div class="mitre-fill" style="width:80%"></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px">80%</div></div>
+  </div>
+</section>
+<footer>
+  <span class="footer-note">dns-purple-lab &mdash; defensive research only</span>
+  <div class="footer-links"><a href="https://github.com" target="_blank">GitHub</a><a href="https://medium.com" target="_blank">Medium</a><a href="https://linkedin.com" target="_blank">LinkedIn</a></div>
+</footer>
+</body>
+</html>
